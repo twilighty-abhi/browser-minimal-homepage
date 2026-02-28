@@ -537,4 +537,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initTimer();
     initGoals();
     initSettings();
+
+    document.addEventListener('click', (e) => {
+        const tag = e.target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON' || tag === 'SELECT' || tag === 'A') return;
+        if (e.target.closest('[contenteditable]')) return;
+        document.getElementById('search-input').focus();
+    });
 });
