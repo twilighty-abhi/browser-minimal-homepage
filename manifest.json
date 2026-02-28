@@ -1,0 +1,25 @@
+{
+    "manifest_version": 3,
+    "name": "Minimal Productivity Homepage",
+    "short_name": "Minimal Home",
+    "version": "1.0.0",
+    "description": "A minimal productivity homepage for your new tab — search, quick links, focus timer, daily goals, and more.",
+    "author": "Abhiram NJ",
+    "minimum_chrome_version": "114",
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    },
+    "action": {
+        "default_icon": {
+            "16": "icon16.png",
+            "48": "icon48.png",
+            "128": "icon128.png"
+        }
+    },
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "permissions": ["notifications"]
+}
