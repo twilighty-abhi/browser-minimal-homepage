@@ -1,6 +1,4 @@
-// ============================================
-// CONSTANTS & DEFAULT DATA
-// ============================================
+// --- Constants & Defaults ---
 
 const DEFAULT_QUICK_LINKS = [
     { name: 'Gmail', icon: 'mail', url: 'https://mail.google.com', colorVar: '--link-gmail' },
@@ -19,9 +17,7 @@ const DEFAULT_GOALS = [
 
 const DEFAULT_FOCUS_MINUTES = 25;
 
-// ============================================
-// STATE MANAGEMENT
-// ============================================
+// --- State ---
 
 let timerInterval = null;
 let timerSecondsLeft = 0;
@@ -29,9 +25,7 @@ let timerRunning = false;
 let focusDuration = DEFAULT_FOCUS_MINUTES * 60;
 let isEditingGoals = false;
 
-// ============================================
-// STORAGE UTILITIES
-// ============================================
+// --- Storage ---
 
 function getFromStorage(key, defaultValue) {
     const stored = localStorage.getItem(key);
@@ -42,9 +36,7 @@ function saveToStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 }
 
-// ============================================
-// THEME MANAGEMENT
-// ============================================
+// --- Theme ---
 
 function initTheme() {
     const theme = getFromStorage('theme', 'dark');
@@ -71,9 +63,7 @@ function toggleTheme() {
     applyTheme(newTheme);
 }
 
-// ============================================
-// TIME & GREETING (with dynamic name)
-// ============================================
+// --- Clock & Progress ---
 
 function updateTime() {
     const now = new Date();
@@ -149,45 +139,10 @@ function initClock() {
     setInterval(() => updateProgressBars(new Date()), 60000);
 }
 
-// ============================================
-// SEARCH FUNCTIONALITY
-// ============================================
+// --- Search ---
 
 function initSearch() {
     const searchInput = document.getElementById('search-input');
-
-    // Chromium browsers force-focus the omnibox on new-tab override pages.
-    // We fight back with repeated attempts and capture stray keystrokes.
-    const grabFocus = () => searchInput.focus();
-    grabFocus();
-    setTimeout(grabFocus, 200);
-    setTimeout(grabFocus, 600);
-
-    // Reclaim on any click on the page background.
-    document.addEventListener('click', (e) => {
-        const tag = e.target.tagName;
-        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON' || tag === 'A') return;
-        if (e.target.closest('a, button, input, textarea, .settings-panel')) return;
-        grabFocus();
-    });
-
-    // Reclaim when page/window regains visibility.
-    window.addEventListener('focus', grabFocus);
-    document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) grabFocus();
-    });
-
-    // Forward stray keystrokes to the search bar.
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey || e.altKey || e.metaKey) return;
-        if (e.key === 'Tab' || e.key === 'Escape') return;
-        const active = document.activeElement;
-        const tag = active.tagName;
-        if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-        if (e.key.length === 1) {
-            searchInput.focus();
-        }
-    });
 
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleSearch(searchInput.value.trim());
@@ -210,9 +165,7 @@ function isValidURL(string) {
     return false;
 }
 
-// ============================================
-// QUICK LINKS (homescreen — no edit button)
-// ============================================
+// --- Quick Links ---
 
 function initQuickLinks() {
     const links = getFromStorage('quickLinks', DEFAULT_QUICK_LINKS);
@@ -250,9 +203,7 @@ function createQuickLinkElement(link) {
     return a;
 }
 
-// ============================================
-// SETTINGS PANEL
-// ============================================
+// --- Settings ---
 
 function initSettings() {
     document.getElementById('settings-toggle').addEventListener('click', openSettings);
@@ -409,9 +360,7 @@ function resetAllData() {
     }
 }
 
-// ============================================
-// FOCUS TIMER
-// ============================================
+// --- Timer ---
 
 function initTimer() {
     const savedMinutes = getFromStorage('focusMinutes', DEFAULT_FOCUS_MINUTES);
@@ -494,9 +443,7 @@ function showTimerNotification() {
     }
 }
 
-// ============================================
-// DAILY GOALS (footer bar)
-// ============================================
+// --- Goals ---
 
 function initGoals() {
     const goals = getFromStorage('dailyGoals', DEFAULT_GOALS);
@@ -580,9 +527,7 @@ function handleGoalEditToggle() {
     }
 }
 
-// ============================================
-// INITIALIZATION
-// ============================================
+// --- Init ---
 
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();

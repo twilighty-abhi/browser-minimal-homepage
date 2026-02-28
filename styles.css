@@ -20,8 +20,6 @@
     --text-primary: rgba(255, 255, 255, 0.9);
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
-    --text-faint: #475569;
-
     --border-default: rgba(255, 255, 255, 0.05);
     --border-hover: rgba(255, 255, 255, 0.1);
     --border-input: rgba(255, 255, 255, 0.1);
@@ -35,9 +33,6 @@
 
     --gradient-1: rgba(94, 106, 210, 0.05);
     --gradient-2: rgba(59, 130, 246, 0.05);
-    --bg-gradient:
-        radial-gradient(at 0% 0%, rgba(94, 106, 210, 0.03) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(94, 106, 210, 0.03) 0px, transparent 50%);
 
     /* Quick link hover colors */
     --link-gmail: #f87171;
@@ -60,8 +55,6 @@ html:not(.dark) {
     --text-primary: rgba(0, 0, 0, 0.85);
     --text-secondary: #64748b;
     --text-muted: #94a3b8;
-    --text-faint: #cbd5e1;
-
     --border-default: rgba(0, 0, 0, 0.08);
     --border-hover: rgba(0, 0, 0, 0.12);
     --border-input: rgba(0, 0, 0, 0.1);
@@ -75,9 +68,6 @@ html:not(.dark) {
 
     --gradient-1: rgba(94, 106, 210, 0.06);
     --gradient-2: rgba(59, 130, 246, 0.06);
-    --bg-gradient:
-        radial-gradient(at 0% 0%, rgba(94, 106, 210, 0.05) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(94, 106, 210, 0.05) 0px, transparent 50%);
 
     --link-gmail: #dc2626;
     --link-github: #1e293b;
@@ -454,10 +444,8 @@ body {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border-default);
     border-radius: 1rem;
-    padding: 0;
     display: flex;
     align-items: stretch;
-    gap: 0;
     box-shadow: var(--shadow-card), 0 0 0 1px var(--border-default);
     transition: background-color 0.3s, border-color 0.3s;
     overflow: hidden;
@@ -526,6 +514,10 @@ body {
 
 .timer-btn .material-symbols-outlined {
     font-size: 16px;
+}
+
+.timer-icon-filled {
+    font-variation-settings: 'FILL' 1;
 }
 
 .timer-btn-play {
@@ -674,11 +666,6 @@ body {
     outline: none;
     width: 100%;
     transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.goal-edit-input:focus {
-    border-color: var(--primary-alpha50);
-    box-shadow: 0 0 0 1px var(--primary-alpha50);
 }
 
 .goal-edit-wrapper {
@@ -844,7 +831,8 @@ body {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.goal-edit-input:focus {
     border-color: var(--primary-alpha50);
     box-shadow: 0 0 0 1px var(--primary-alpha50);
 }
@@ -932,11 +920,6 @@ body {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.settings-goal-row .goal-edit-input:focus {
-    border-color: var(--primary-alpha50);
-    box-shadow: 0 0 0 1px var(--primary-alpha50);
-}
-
 /* Timer stat display */
 .settings-stat {
     display: flex;
@@ -963,6 +946,8 @@ body {
     font-size: 0.75rem;
     font-weight: 500;
     font-family: inherit;
+    background: var(--bg-subtle);
+    color: var(--text-muted);
     border: none;
     cursor: pointer;
     transition: all 0.2s;
@@ -1039,36 +1024,6 @@ body {
 
 .btn-primary:hover {
     background: var(--primary-hover);
-}
-
-.btn-ghost {
-    background: var(--bg-subtle);
-    color: var(--text-muted);
-}
-
-.btn-ghost:hover {
-    background: var(--bg-subtle-hover);
-    color: var(--text-primary);
-}
-
-/* ============================================
-   Animations
-   ============================================ */
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
 }
 
 /* ============================================
