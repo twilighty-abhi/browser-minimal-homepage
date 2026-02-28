@@ -2,6 +2,10 @@
 
 A Manifest V3 Chrome/Edge extension that replaces the new tab with a calming, productivity-focused dashboard. Includes search, quick links, a Pomodoro-style timer, daily goals, theming, and a configurable settings panel — no frameworks, just vanilla HTML/CSS/JS.
 
+## About
+
+**Minimal Productivity Homepage** is a lightweight browser extension that transforms every new tab into a clean, distraction-free workspace. Built with pure HTML, CSS, and JavaScript (no external frameworks or dependencies beyond Google Fonts), it keeps you focused with a Pomodoro timer, daily goal tracking, and quick-access links — while staying completely private (all data stays in your browser's localStorage).
+
 ## Features
 
 - **Smart Search** — Google search box with autofocus and URL detection.
