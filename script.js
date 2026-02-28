@@ -24,6 +24,7 @@ let timerSecondsLeft = 0;
 let timerRunning = false;
 let focusDuration = DEFAULT_FOCUS_MINUTES * 60;
 let isEditingGoals = false;
+let currentEngine = 'google'; // 'google' | 'perplexity' | 'chatgpt'
 
 // --- Storage ---
 
@@ -141,12 +142,99 @@ function initClock() {
 
 // --- Search ---
 
+const ENGINE_CONFIG = {
+    google: {
+        searchUrl: (q) => `https://www.google.com/search?q=${encodeURIComponent(q)}`,
+        placeholder: 'Search Google or type a URL'
+    },
+    perplexity: {
+        searchUrl: (q) => `https://www.perplexity.ai/search?q=${encodeURIComponent(q)}`,
+        placeholder: 'Ask Perplexity...'
+    },
+    chatgpt: {
+        searchUrl: (q) => `https://chatgpt.com/?q=${encodeURIComponent(q)}`,
+        placeholder: 'Ask ChatGPT...'
+    }
+};
+
 function initSearch() {
     const searchInput = document.getElementById('search-input');
+    const trigger = document.getElementById('engine-trigger');
+    const dropdown = document.getElementById('engine-dropdown');
+
+    // Restore saved engine
+    currentEngine = getFromStorage('searchEngine', 'google');
+    applyEngine(currentEngine);
+
+    // Toggle dropdown on trigger click
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('open');
+        if (isOpen) {
+            closeEngineDropdown();
+        } else {
+            dropdown.classList.add('open');
+            trigger.setAttribute('aria-expanded', 'true');
+        }
+    });
+
+    // Select engine from dropdown
+    dropdown.addEventListener('click', (e) => {
+        const option = e.target.closest('.engine-option');
+        if (!option) return;
+        const engine = option.dataset.engine;
+        currentEngine = engine;
+        saveToStorage('searchEngine', engine);
+        applyEngine(engine);
+        closeEngineDropdown();
+        searchInput.focus();
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#engine-picker')) {
+            closeEngineDropdown();
+        }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeEngineDropdown();
+    });
 
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleSearch(searchInput.value.trim());
     });
+}
+
+function applyEngine(engine) {
+    const searchInput = document.getElementById('search-input');
+    const dropdown = document.getElementById('engine-dropdown');
+
+    // Show correct trigger icon
+    ['google', 'perplexity', 'chatgpt'].forEach((eng) => {
+        const icon = document.getElementById(`icon-${eng}`);
+        if (icon) icon.style.display = eng === engine ? '' : 'none';
+    });
+
+    // Update placeholder
+    if (searchInput && ENGINE_CONFIG[engine]) {
+        searchInput.placeholder = ENGINE_CONFIG[engine].placeholder;
+    }
+
+    // Update active state in dropdown
+    if (dropdown) {
+        dropdown.querySelectorAll('.engine-option').forEach((opt) => {
+            opt.classList.toggle('engine-option--active', opt.dataset.engine === engine);
+        });
+    }
+}
+
+function closeEngineDropdown() {
+    const dropdown = document.getElementById('engine-dropdown');
+    const trigger = document.getElementById('engine-trigger');
+    if (dropdown) dropdown.classList.remove('open');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
 }
 
 function handleSearch(query) {
@@ -154,7 +242,8 @@ function handleSearch(query) {
     if (isValidURL(query)) {
         window.location.href = query.startsWith('http') ? query : `https://${query}`;
     } else {
-        window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        const config = ENGINE_CONFIG[currentEngine] || ENGINE_CONFIG.google;
+        window.location.href = config.searchUrl(query);
     }
 }
 

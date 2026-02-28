@@ -340,30 +340,132 @@ body {
     box-shadow: var(--primary-glow), var(--shadow-input);
 }
 
-.search-icon-wrap {
+/* Search engine picker (replaces old .search-icon-wrap) */
+.search-engine-wrap {
     position: absolute;
-    left: 1.25rem;
+    left: 1.1rem;
     top: 50%;
     transform: translateY(-50%);
-    pointer-events: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
+    z-index: 10;
 }
 
-.google-icon {
-    width: 1.25rem;
-    height: 1.25rem;
+.engine-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 0.4rem;
+    transition: background 0.15s;
     color: rgba(94, 106, 210, 0.9);
-    filter: drop-shadow(0 1px 6px rgba(94, 106, 210, 0.4));
-    transition: color 0.3s, filter 0.3s;
+    filter: drop-shadow(0 1px 6px rgba(94, 106, 210, 0.3));
 }
 
-.search-input:focus ~ .search-icon-wrap .google-icon,
-.search-wrapper:focus-within .google-icon {
+.engine-trigger:hover {
+    background: var(--bg-subtle-hover);
+    filter: drop-shadow(0 2px 8px rgba(94, 106, 210, 0.45));
+}
+
+.search-wrapper:focus-within .engine-trigger {
     color: var(--primary);
     filter: drop-shadow(0 2px 10px rgba(94, 106, 210, 0.55));
+}
+
+.engine-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* Engine Dropdown */
+.engine-dropdown {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    left: 50%;
+    transform: translateX(-50%) translateY(-4px);
+    background: var(--bg-card);
+    border: 1px solid var(--border-hover);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-card);
+    padding: 0.375rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 9rem;
+    z-index: 100;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+}
+
+.engine-dropdown.open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+.engine-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.65rem;
+    background: none;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-family: inherit;
+    font-weight: 500;
+    text-align: left;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.engine-option:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.engine-option--active {
+    color: var(--primary);
+    background: var(--primary-alpha20);
+}
+
+.engine-option--active:hover {
+    background: var(--primary-alpha20);
+    color: var(--primary);
+}
+
+.engine-option-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+}
+
+/* Engine-specific icon colors */
+#icon-google,
+.engine-option[data-engine="google"] .engine-option-icon {
+    color: var(--primary);
+}
+
+#icon-perplexity,
+.engine-option[data-engine="perplexity"] .engine-option-icon {
+    color: #20b2aa;
+}
+
+#icon-chatgpt,
+.engine-option[data-engine="chatgpt"] .engine-option-icon {
+    color: #10a37f;
 }
 
 /* ============================================
